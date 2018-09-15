@@ -32,11 +32,11 @@ static void		manage(t_dot *pixel, t_ptrs *p)
 	double		temp;
 
 	iter = -1;
-	max_it = 1000;
+	max_it = p->f->iter;
 	set_dotd(&it, 0, 0);
 	set_dotd(&scaled, ((double)pixel->x / WIDTH) * 3.5 - 2.5,
 	((double)pixel->y * 2 / HEIGHT - 1));
-	while (it.x * it.x + it.y * it.y < 4 && ++iter < max_it)
+	while (it.x * it.x + it.y * it.y < 10 && ++iter < max_it)
 	{
 		temp = it.x * it.x - it.y * it.y + scaled.x;
 		it.y = 2 * it.x * it.y + scaled.y;
@@ -54,15 +54,19 @@ static void		mandelbrot(t_ptrs *p)
 	{
 		pixel.y = -1;
 		while (++pixel.y < HEIGHT)
-			manage(&pixel, p);
+		manage(&pixel, p);
 	}
-	mlx_put_image_to_window(p->mlx_ptr, p->win_ptr, p->img_ptr, 0, 0);
 }
 
 void			draw_fract(t_ptrs *p)
 {
+	double			radius;
+	
+	radius = 2;
+	clear_all(p);
 	if (p->f->fract == 0)
 		mandelbrot(p);
-	// if (p->f->fract == 1)
-	// 	julia(p);
+	if (p->f->fract == 1)
+		julia(p, p->f->j_c, radius, p->f->iter);
+	mlx_put_image_to_window(p->mlx_ptr, p->win_ptr, p->img_ptr, 0, 0);
 }

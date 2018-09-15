@@ -38,15 +38,29 @@ static t_ptrs			*init_ptr(void)
 			&size_line, &endian);
 	p->f = (t_f *)malloc(sizeof(t_f));
 	p->f->color = GREY_BLUE;
-	p->f->fract = 0;
+	p->f->iter = 1000;
+	p->f->j_c.re = -0.4;
+	p->f->j_c.im = 0.6;
 	return (p);
 }
 
-int						main(void)
+static int				usage(void)
+{
+	write(1, "usage: ./fractol [mandelbrot][julia][surprise]\n", 47);
+	return (0);
+}
+
+int						main(int argc, char **argv)
 {
 	t_ptrs		*p;
 
 	p = init_ptr();
+	if (argc != 2)
+	return (usage());
+	if (ft_strcmp(argv[1], "mandelbrot") == 0)
+		p->f->fract = 0;
+	else if (ft_strcmp(argv[1], "julia") == 0)
+		p->f->fract = 1;
 	draw_fract(p);
 
 	mlx_hook(p->win_ptr, 4, 1L << 2, mouse_press, p);

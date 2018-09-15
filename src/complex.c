@@ -39,4 +39,16 @@ t_complex	mul(t_complex c1, t_complex c2)
 	return (res);
 }
 
+t_complex	sqr(t_complex c)
+{
+	t_complex		c2;
 
+	c2.re = c.re * c.re - c.im * c.im;
+	c2.im = 2 * c.re * c.im;
+	return (c2);
+}
+
+double		mod(t_complex a)
+{
+	return sqrt(a.re * a.re + a.im * a.im);
+}

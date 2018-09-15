@@ -16,6 +16,7 @@
 # include <unistd.h>
 # include <math.h>
 # include <stdlib.h>
+# include "../libft/includes/libft.h"
 # define WIDTH 1800
 # define HEIGHT 1100
 # define GREY_BLUE 0x667793
@@ -31,6 +32,13 @@
 # define BLACK 0x000000
 
 #include <stdio.h>
+
+typedef struct		s_copmlex
+{
+	double			re;
+	double			im;
+}					t_complex;
+
 
 typedef struct		s_dot
 {
@@ -58,6 +66,8 @@ typedef struct		s_f
 	int				color;
 	t_mouse			mouse;
 	char			fract;
+	int				iter;
+	t_complex		j_c;
 }					t_f;
 
 typedef struct		s_ptrs
@@ -69,14 +79,10 @@ typedef struct		s_ptrs
 	t_f				*f;
 }					t_ptrs;
 
-typedef struct		s_copmlex
-{
-	int				re;
-	int				im;
-}					t_complex;
 
 
 void				draw_fract(t_ptrs *p);
+void				julia(t_ptrs *p, t_complex c, double radius, int n);
 
 /*
 **		KEYS
@@ -97,6 +103,8 @@ void				darken(int *col, double c);
 t_complex			mul(t_complex c1, t_complex c2);
 t_complex			add(t_complex c1, t_complex c2);
 t_complex			sub(t_complex c1, t_complex c2);
+t_complex			sqr(t_complex c);
+double				mod(t_complex a);
 /*
 **		addtitional
 */

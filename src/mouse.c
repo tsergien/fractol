@@ -44,10 +44,17 @@ int		mouse_release(int button, int x, int y, t_ptrs *f)
 	return (0);
 }
 
-int		mouse_move(int x, int y, t_ptrs *f)
+int		mouse_move(int x, int y, t_ptrs *p)
 {
+	if (p->f->fract == 1)
+	{
+		clear_all(p);
+		p->f->j_c.re = (double)(x - WIDTH / 2.0) / WIDTH;
+		p->f->j_c.im = (double)(y - HEIGHT / 2.0) / HEIGHT;
+		draw_fract(p);
+	}
 	x = y;
-	(void)f;
+	(void)p;
 	return (0);
 }
 

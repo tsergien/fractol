@@ -47,11 +47,36 @@ static int		change_color(t_ptrs *p)
 	return (0);
 }
 
+static int		next_fract(t_ptrs *p)
+{
+	p->f->fract = (p->f->fract + 1) % 2;
+	clear_all(p);
+	draw_fract(p);
+	return (0);
+}
+
+static int		iter(int key, t_ptrs *p)
+{
+	clear_all(p);
+	if (key == 27)
+		p->f->iter -= 100;
+	else if (key == 24)
+		p->f->iter += 100;
+	if (p->f->iter < 10)
+		p->f->iter = 100;
+	draw_fract(p);
+	return (0);
+}
+	
 int				deal_keys(int key, t_ptrs *p)
 {
-if (key == 53)
-	return (escape_key(key, p));
-else if (key == 8)
-	return (change_color(p));
-return (0);
+	if (key == 53)
+		return (escape_key(key, p));
+	else if (key == 8)
+		return (change_color(p));
+	else if (key == 49)
+		return (next_fract(p));
+	else if (key == 27 || key == 24)
+		return (iter(key, p));
+	return (0);
 }
