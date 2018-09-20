@@ -12,7 +12,7 @@
 
 NAME = fractol
 
-SRC_FILES = additional.c main.c keys.c mouse.c rgb.c mandelbrot.c julia.c complex.c
+SRC_FILES = additional.c main.c keys.c mouse.c rgb.c mandelbrot.c julia.c complex.c keys2.c barnsley_fern.c
 
 SRC_DIR = src/
 

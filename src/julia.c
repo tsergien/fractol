@@ -12,42 +12,24 @@
 
 #include "../includes/fractol.h"
 
-static t_complex	map_point(double radius, int x, int y)
-{
-	t_complex	c;
-	int			l;
-
-	l = (WIDTH < HEIGHT) ? WIDTH : HEIGHT;
-	c.re = 2 * radius * (x - WIDTH / 2.0) / l;
-	c.im = 2 * radius * (y - HEIGHT / 2.0) / l ;
-	return (c);
-}
-
-static int		j_palette(int iter, int color)
-{
-	int		color_temp;
-	double	c;
-	
-	color_temp = color;
-	c = (double)iter / 5;
-	darken(&color_temp, c);
-	return (color_temp);
-}
-
 static int		manage(t_ptrs *p, t_dot *o, t_complex c, t_dotd rn)
 {
 	int			i;
 	t_complex	z0;
 	t_complex	z1;
+	double		smooth;
 
 	i = 0;
-	z0 = map_point(rn.x, o->x, o->y);
+	z0.re = 1.5 * (o->x - CENTER_W) / (0.5 * p->f->zoom * WIDTH) + p->f->shift.x;
+    z0.im = (o->y - CENTER_H) / (0.5 * p->f->zoom * HEIGHT) + p->f->shift.y;
 	while (++i <= rn.y)
 	{
 		z1 = add(sqr(z0), c);
 		if(mod(z1) > rn.x)
 		{
-			put_pixel_to_image(p, o->x , o->y, j_palette(i % 15 + 1, p->f->color));
+			smooth = log(log(mod(z1)) / M_LOG2E) / M_LOG2E;
+			put_pixel_to_image(p, o->x, o->y,
+			p->f->palette[(int)(sqrt(i + 1 - smooth) * 256) % PALETTE_SIZE]);
 			break ;
 		}
 		z0 = z1;

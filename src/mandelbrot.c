@@ -12,37 +12,27 @@
 
 #include "../includes/fractol.h"
 
-static int		palette(int iter, int color)
-{
-	int		color_temp;
-	double	c;
-	
-	color_temp = color;
-	c = (double)iter / 10;
-	darken(&color_temp, c);
-	return (color_temp);
-}
-
 static void		manage(t_dot *pixel, t_ptrs *p)
 {
 	t_dotd		scaled;
-	t_dotd		it;
+	t_complex	z;
 	int			iter;
-	int			max_it;
 	double		temp;
 
 	iter = -1;
-	max_it = p->f->iter;
-	set_dotd(&it, 0, 0);
-	set_dotd(&scaled, ((double)pixel->x / WIDTH) * 3.5 - 2.5,
-	((double)pixel->y * 2 / HEIGHT - 1));
-	while (it.x * it.x + it.y * it.y < 10 && ++iter < max_it)
+	z.re = 0;
+	z.im = 0;
+	scaled.x = p->f->zoom * ((double)(pixel->x + p->f->shift.x) * 3.5 / WIDTH - 2.5);
+	scaled.y = p->f->zoom * ((double)(pixel->y + p->f->shift.y) * 2 / HEIGHT - 1);
+	while (z.re * z.re + z.im * z.im < 4.0 && ++iter < p->f->iter)
 	{
-		temp = it.x * it.x - it.y * it.y + scaled.x;
-		it.y = 2 * it.x * it.y + scaled.y;
-		it.x = temp;
+		temp = z.re * z.re - z.im * z.im + scaled.x;
+		z.im = 2 * z.re * z.im + scaled.y;
+		z.re = temp;
 	}
-	put_pixel_to_image(p, pixel->x, pixel->y, palette(iter, p->f->color));
+	temp = log(log(mod(z)) / M_LOG2E) / M_LOG2E;
+	put_pixel_to_image(p, pixel->x, pixel->y,
+	p->f->palette[(int)(sqrt(iter + 1 - temp) * 256) % PALETTE_SIZE]);
 }
 
 static void		mandelbrot(t_ptrs *p)
@@ -54,7 +44,7 @@ static void		mandelbrot(t_ptrs *p)
 	{
 		pixel.y = -1;
 		while (++pixel.y < HEIGHT)
-		manage(&pixel, p);
+			manage(&pixel, p);
 	}
 }
 
@@ -68,5 +58,7 @@ void			draw_fract(t_ptrs *p)
 		mandelbrot(p);
 	if (p->f->fract == 1)
 		julia(p, p->f->j_c, radius, p->f->iter);
+	if (p->f->fract == 2)
+		barnsleyFern(p);
 	mlx_put_image_to_window(p->mlx_ptr, p->win_ptr, p->img_ptr, 0, 0);
 }

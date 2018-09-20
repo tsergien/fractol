@@ -20,35 +20,48 @@ static int				exit_x(int key, t_ptrs *p)
 	return (0);
 }
 
+static t_f				*init_f(void)
+{
+	t_f				*f;
+
+	f = (t_f *)malloc(sizeof(t_f));
+	f->iter = 100;
+	f->j_c.re = -0.4;
+	f->j_c.im = 0.6;
+	f->zoom = 1;
+	f->color_l = 0;
+	set_dot(&f->shift, 0, 0);
+	fill_palette(f);
+	return (f);
+}
+
 static t_ptrs			*init_ptr(void)
 {
-	int				bits_per_pixel;
-	int				size_line;
-	int				endian;
+	int				b;
+	int				s;
+	int				e;
 	t_ptrs			*p;
 
-	bits_per_pixel = 32;
-	size_line = WIDTH;
-	endian = 1;
+	b = 32;
+	s = WIDTH;
+	e = 1;
 	p = (t_ptrs *)malloc(sizeof(t_ptrs));
 	p->mlx_ptr = mlx_init();
 	p->win_ptr = mlx_new_window(p->mlx_ptr, WIDTH, HEIGHT, "FRACTOL");
 	p->img_ptr = mlx_new_image(p->mlx_ptr, WIDTH, HEIGHT);
-	p->img = (int *)mlx_get_data_addr(p->img_ptr, &bits_per_pixel,
-			&size_line, &endian);
-	p->f = (t_f *)malloc(sizeof(t_f));
-	p->f->color = GREY_BLUE;
-	p->f->iter = 1000;
-	p->f->j_c.re = -0.4;
-	p->f->j_c.im = 0.6;
+	p->img = (int *)mlx_get_data_addr(p->img_ptr, &b, &s, &e);
+	p->f = init_f();
 	return (p);
 }
 
 static int				usage(void)
 {
-	write(1, "usage: ./fractol [mandelbrot][julia][surprise]\n", 47);
+	write(1, "usage: ./fractol [mandelbrot][julia][fern]\n", 47);
 	return (0);
 }
+
+// OpenCl
+// ZOOM IN THE DOT
 
 int						main(int argc, char **argv)
 {
@@ -61,6 +74,8 @@ int						main(int argc, char **argv)
 		p->f->fract = 0;
 	else if (ft_strcmp(argv[1], "julia") == 0)
 		p->f->fract = 1;
+	else if (ft_strcmp(argv[1], "fern") == 0)
+		p->f->fract = 2;
 	draw_fract(p);
 
 	mlx_hook(p->win_ptr, 4, 1L << 2, mouse_press, p);
