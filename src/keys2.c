@@ -22,18 +22,40 @@ int		shifting(int key, t_ptrs *p)
 		p->f->shift.x -= 10;
 	else if (key == 124)
 		p->f->shift.x += 10;
-	clear_all(p);
-	draw_fract(p);
+	launch_threads(p);
 	return (0);
 }
 
 int		zooming(int key, t_ptrs *p)
 {
-	if (key == 78)
+	if (key == 69)
 		p->f->zoom += 0.05;
-	else if (key == 69)
+	else if (key == 78)
 		p->f->zoom -= 0.05;
-	clear_all(p);
-	draw_fract(p);
+	if (p->f->zoom < 0)
+		p->f->zoom = 0.01;
+	launch_threads(p);
+	return (0);
+}
+
+int		change_palette(int key, t_ptrs *p)
+{
+	key = 0;
+	if (p->f->color == COLOR4)
+		p->f->color = PINK;
+	else if (p->f->color == PINK)
+		p->f->color = L_RED;
+	else if (p->f->color == L_RED)
+		p->f->color = L_BLUE;
+	else if (p->f->color == L_BLUE)
+		p->f->color = RASPBERRY;
+	else if (p->f->color == RASPBERRY)
+		p->f->color = RED;
+	else if (p->f->color == RED)
+		p->f->color = GREEN;
+	else
+		p->f->color = COLOR4;
+	fill_palette(p->f);
+	launch_threads(p);		
 	return (0);
 }

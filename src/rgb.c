@@ -12,23 +12,6 @@
 
 #include "../includes/fractol.h"
 
-void			darken(int *col, double c)
-{
-	int		r_comp;
-	int		g_comp;
-	int		b_comp;
-	int		key_factor;
-
-	key_factor = (double)c * 100;
-	r_comp = *col >> 16;
-	g_comp = (*col & 0xff00) >> 8;
-	b_comp = *col & 0xff;
-	r_comp = (r_comp - r_comp * key_factor / 0x100) << 16;
-	g_comp = (g_comp - g_comp * key_factor / 0x100) << 8;
-	b_comp = b_comp - b_comp * key_factor / 0x100;
-	*col = r_comp + g_comp + b_comp;
-}
-
 int				gradient(int color1, int color2, double k)
 {
 	int		r_comp;
@@ -56,7 +39,7 @@ void			fill_palette(t_f *f)
 	colors[0] = COLOR1;
 	colors[1] = COLOR2;
 	colors[2] = COLOR3;
-	colors[3] = COLOR4;
+	colors[3] = f->color;
 	colors[4] = COLOR5;
 	while (++j < PALETTE_SIZE)
 	{

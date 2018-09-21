@@ -23,21 +23,22 @@
 **		Scroll Right — 7
 */
 
-// double interpolate(double start, double end, double interpolation)
-// {
-//     return (start + ((end - start) * interpolation));
-// }
+double interpolate(double start, double end, double interpolation)
+{
+    return (start + ((end - start) * interpolation));
+}
 
-// void applyZoom(t_ptrs *p, int mouseRe, int mouseIm)
-// {
-//      double interpolation;
+void applyZoom(t_ptrs *p, int x, int y)
+{
+    double interpolation;
 	 
-// 	 interpolation = 1.0 / p->f->zoom;
-//     //  p->Re.min = interpolate((double)mouseRe, 0, interpolation);
-//     //  p->Re.max = interpolate((double)mouseRe, WIDTH, interpolation);
-//     //  p->Im.min = interpolate((double)mouseIm, 0, interpolation);
-//     //  p->Im.max = interpolate((double)mouseIm, HEIGHT, interpolation);
-// }
+	interpolation = 1.0 / p->f->zoom;
+	// e->Re.min = interpolate(mouseRe, e->Re.min, interpolation);
+    // e->Im.min = interpolate(mouseIm, e->Im.min, interpolation);
+    // e->Re.max = interpolate(mouseRe, e->Re.max, interpolation);
+    // e->Im.max = interpolate(mouseIm, e->Im.max, interpolation);
+	x = y;
+}
 
 int		mouse_press(int button, int x, int y, t_ptrs *p)
 {
@@ -45,17 +46,21 @@ int		mouse_press(int button, int x, int y, t_ptrs *p)
 	// double mouseIm = (double)y / (HEIGHT / (p->Im.max - p->Im.min)) + p->Im.min;
 	
 	// applyZoom(p, mouseRe, mouseIm);
-	clear_all(p);
+	applyZoom(p, x, y);
 	if (button == 4)
-		p->f->zoom += 0.05;
-	else if (button == 5)
 		p->f->zoom -= 0.05;
-	if (p->f->fract == 0)
+	else if (button == 5)
+		p->f->zoom += 0.05;
+		//shifting depends only from mouse loication, but not from the 
+	if (p->f->fract != 1)
 	{
-		p->f->shift.x += x - CENTER_W;
-		p->f->shift.y += y - CENTER_H;
+		x = x / (WIDTH / 4);
+		y = y / (HEIGHT / 4);
+		p->f->shift.x += x < 2 ? 20 * (x%2 + 1) : -20 * (x%2 + 1);
+		p->f->shift.y += y < 2 ? 20 * (y%2 + 1) : -20 * (y%2 + 1);
 	}
-	draw_fract(p);
+	launch_threads(p);
+	x = y;
 	return (0);
 }
 
@@ -63,9 +68,10 @@ int		mouse_release(int button, int x, int y, t_ptrs *p)
 {
 	if (button == 1)
 	{
-		p->f->shift.x -= x - CENTER_W;
-		p->f->shift.y -= y - CENTER_H;
+		p->f->shift.x += CENTER_W - x;
+		p->f->shift.y += CENTER_H - y;
 	}
+	launch_threads(p);
 	return (0);
 }
 
@@ -73,10 +79,9 @@ int		mouse_move(int x, int y, t_ptrs *p)
 {
 	if (p->f->fract == 1)
 	{
-		clear_all(p);
 		p->f->j_c.re = (double)(x - CENTER_W) / WIDTH;
 		p->f->j_c.im = (double)(y - CENTER_H) / HEIGHT;
-		draw_fract(p);
+		launch_threads(p);
 	}
 	(void)p;
 	return (0);

@@ -20,45 +20,38 @@ static int		escape_key(int key, t_ptrs *p)
 	return (0);
 }
 
-static int		change_color(int key, t_ptrs *p)
-{
-	if (key == 9)
-	{
-		p->f->color_l = p->f->color_l == 1 ? 0 : 1;
-		return (0);
-	}
-	clear_all(p);
-	draw_fract(p);
-	return (0);
-}
-
 static int		next_fract(t_ptrs *p)
 {
 	p->f->fract = (p->f->fract + 1) % 3;
-	clear_all(p);
-	draw_fract(p);
+	launch_threads(p);
 	return (0);
 }
 
 static int		iter(int key, t_ptrs *p)
 {
-	clear_all(p);
 	if (key == 27)
 		p->f->iter -= 2;
 	else if (key == 24)
 		p->f->iter += 2;
 	if (p->f->iter < 2)
 		p->f->iter = 2;
-	draw_fract(p);
+	launch_threads(p);
 	return (0);
 }
-	
+
+static int		reset(t_ptrs *p)
+{
+	p->f->zoom = 1;
+	p->f->shift.x = 0;
+	p->f->shift.y = 0;
+	launch_threads(p);
+	return (0);
+}
+
 int				deal_keys(int key, t_ptrs *p)
 {
 	if (key == 53)
 		return (escape_key(key, p));
-	else if (key == 8 || key == 9)
-		return (change_color(key, p));
 	else if (key == 49)
 		return (next_fract(p));
 	else if (key == 27 || key == 24)
@@ -67,5 +60,9 @@ int				deal_keys(int key, t_ptrs *p)
 		return (shifting(key, p));
 	else if (key == 69 || key == 78)
 		return (zooming(key, p));
+	else if (key == 36)
+		return (reset(p));
+	else if (key == 8)
+		return (change_palette(key, p));
 	return (0);
 }

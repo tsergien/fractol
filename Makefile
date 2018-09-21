@@ -12,7 +12,7 @@
 
 NAME = fractol
 
-SRC_FILES = additional.c main.c keys.c mouse.c rgb.c mandelbrot.c julia.c complex.c keys2.c barnsley_fern.c
+SRC_FILES = additional.c main.c keys.c mouse.c rgb.c fractal.c complex.c keys2.c threads.c
 
 SRC_DIR = src/
 
@@ -26,13 +26,13 @@ OBJ = $(addprefix $(OBJ_DIR), $(OBJ_FILES))
 
 HEADER = -I /usr/local/include/ -I includes/
 
-FRAME = -L /usr/local/lib/ -lmlx -framework OpenGl -framework AppKit -lm
+FRAME = -L /usr/local/lib/ -lmlx -framework OpenGl -framework AppKit -lm -lpthread
 
 LIB_DIR = libft/
 
 WWW = -Wall -Wextra -Werror
 
-COLOR = \x1b[38;5;213m #38
+COLOR = \x1b[38;5;213m
 
 RESET_COLOR = \033[0m
 

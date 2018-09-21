@@ -29,8 +29,8 @@ static t_f				*init_f(void)
 	f->j_c.re = -0.4;
 	f->j_c.im = 0.6;
 	f->zoom = 1;
-	f->color_l = 0;
 	set_dot(&f->shift, 0, 0);
+	f->color = COLOR4;
 	fill_palette(f);
 	return (f);
 }
@@ -56,7 +56,7 @@ static t_ptrs			*init_ptr(void)
 
 static int				usage(void)
 {
-	write(1, "usage: ./fractol [mandelbrot][julia][fern]\n", 47);
+	write(1, "usage: ./fractol [mandelbrot][julia][fern]\n", 43);
 	return (0);
 }
 
@@ -66,18 +66,21 @@ static int				usage(void)
 int						main(int argc, char **argv)
 {
 	t_ptrs		*p;
+	int			i;
 
+	i = 0;
+	if (argc < 2)//!=
+		return (usage());
 	p = init_ptr();
-	if (argc != 2)
-	return (usage());
 	if (ft_strcmp(argv[1], "mandelbrot") == 0)
 		p->f->fract = 0;
 	else if (ft_strcmp(argv[1], "julia") == 0)
 		p->f->fract = 1;
 	else if (ft_strcmp(argv[1], "fern") == 0)
 		p->f->fract = 2;
-	draw_fract(p);
-
+	else
+		return (usage());
+	launch_threads(p);
 	mlx_hook(p->win_ptr, 4, 1L << 2, mouse_press, p);
 	mlx_hook(p->win_ptr, 5, 1L << 3, mouse_release, p);
 	mlx_hook(p->win_ptr, 6, 1L << 13, mouse_move, p);
