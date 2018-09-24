@@ -30,9 +30,9 @@ static int		next_fract(t_ptrs *p)
 static int		iter(int key, t_ptrs *p)
 {
 	if (key == 27)
-		p->f->iter -= 2;
+		p->f->iter -= 20;
 	else if (key == 24)
-		p->f->iter += 2;
+		p->f->iter += 20;
 	if (p->f->iter < 2)
 		p->f->iter = 2;
 	launch_threads(p);
