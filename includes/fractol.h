@@ -15,7 +15,7 @@
 # include "mlx.h"
 # include <math.h>
 # include <stdlib.h>
-# include <pthread.h> 
+# include <pthread.h>
 # include <time.h>
 # include "../libft/includes/libft.h"
 # define WIDTH 1800
@@ -33,14 +33,12 @@
 # define WHITE 0xffffff
 # define BLACK 0x000000
 # define PALETTE_SIZE 2048
-# define COLOR1 0x030851
-# define COLOR2 0x206bcb
+# define COLOR1 0x010542
+# define COLOR2 0x27558e
 # define COLOR3 0xedffff
 # define COLOR4 0xffaa00
 # define COLOR5 0x000200
 # define THREADS_NUM 4
-
-#include <stdio.h>//
 
 typedef struct		s_copmlex
 {
@@ -124,8 +122,7 @@ double				mod(t_complex a);
 void				put_pixel_to_image(t_ptrs *p, int x, int y, int color);
 void				set_dotd(t_dotd *a, double x, double y);
 void				set_dot(t_dot *a, int x, int y);
-void				clear_all(t_ptrs *p);
 void				launch_threads(t_ptrs *p);
-
+void				clear_all(t_ptrs *p);
 
 #endif

@@ -60,16 +60,13 @@ static int				usage(void)
 	return (0);
 }
 
-// OpenCl
-// ZOOM IN THE DOT
-
 int						main(int argc, char **argv)
 {
 	t_ptrs		*p;
 	int			i;
 
 	i = 0;
-	if (argc < 2)//!=
+	if (argc != 2)
 		return (usage());
 	p = init_ptr();
 	if (ft_strcmp(argv[1], "mandelbrot") == 0)

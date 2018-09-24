@@ -18,7 +18,7 @@ void			launch_threads(t_ptrs *p)
 	int			i;
 
 	i = -1;
-    clear_all(p);
+	clear_all(p);
 	while (++i < THREADS_NUM)
 	{
 		t[i].p = p;

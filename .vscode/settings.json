@@ -1,0 +1,7 @@
+{
+    "files.associations": {
+        "fractol.h": "c",
+        "limits": "c",
+        "stdio.h": "c"
+    }
+}

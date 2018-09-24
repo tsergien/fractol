@@ -50,5 +50,5 @@ t_complex	sqr(t_complex c)
 
 double		mod(t_complex a)
 {
-	return sqrt(a.re * a.re + a.im * a.im);
+	return (sqrt(a.re * a.re + a.im * a.im));
 }

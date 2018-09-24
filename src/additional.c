@@ -12,12 +12,6 @@
 
 #include "../includes/fractol.h"
 
-void			put_pixel_to_image(t_ptrs *p, int x, int y, int color)
-{
-	if (x > -1 && y > -1 && x < WIDTH && y <HEIGHT)
-		p->img[x + y *WIDTH] = color;
-}
-
 void			set_dotd(t_dotd *a, double x, double y)
 {
 	a->x = x;

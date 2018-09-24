@@ -105,7 +105,7 @@ all: $(NAME)
 $(NAME):
 		@gcc $(FLAGS) -c $(SRC) -I $(HEADER)
 		@ar rc $(NAME) $(OBJ)
-		@echo "$(COLOR) ***		libft compiled		***$(RESET_COLOR)"
+		@echo "$(COLOR)***		libft compiled		***$(RESET_COLOR)"
 
 clean:
 		@rm -f $(OBJ) $(TILDA)

@@ -43,9 +43,10 @@ void			fill_palette(t_f *f)
 	colors[4] = COLOR5;
 	while (++j < PALETTE_SIZE)
 	{
-		if (j == step  || j == PALETTE_SIZE / 2 ||
+		if (j == step || j == PALETTE_SIZE / 2 ||
 		j == PALETTE_SIZE * 3 / 4)
 			k++;
-		f->palette[j] = gradient(colors[k + 1], colors[k], (double)(j % step) * 4.0 / PALETTE_SIZE);
+		f->palette[j] = gradient(colors[k + 1], colors[k],
+		(double)(j % step) * 4.0 / PALETTE_SIZE);
 	}
 }

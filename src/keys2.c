@@ -29,9 +29,9 @@ int		shifting(int key, t_ptrs *p)
 int		zooming(int key, t_ptrs *p)
 {
 	if (key == 69)
-		p->f->zoom += 0.05;
+		p->f->zoom *= 1.05;
 	else if (key == 78)
-		p->f->zoom -= 0.05;
+		p->f->zoom *= 0.95;
 	if (p->f->zoom < 0)
 		p->f->zoom = 0.01;
 	launch_threads(p);
@@ -56,6 +56,6 @@ int		change_palette(int key, t_ptrs *p)
 	else
 		p->f->color = COLOR4;
 	fill_palette(p->f);
-	launch_threads(p);		
+	launch_threads(p);
 	return (0);
 }
